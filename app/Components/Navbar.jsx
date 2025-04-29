@@ -71,12 +71,12 @@ function Navbar() {
 
               {isDropdownOpen && (
                 <div className="absolute left-0 mt-2 w-48 bg-blue-900 text-white border rounded-md shadow-2xl z-10">
-                  <Link href="/hotels" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hotels</Link>
-                  <Link href="/villas" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Villas</Link>
-                  <Link href="/guest-houses" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Guest Houses</Link>
-                  <Link href="/apartments" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Apartments</Link>
-                  <Link href="/campsites" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Campsites</Link>
-                  <Link href="/hostels" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hostels</Link>
+                  <Link href="/PropertyType/Hotel" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hotels</Link>
+                  <Link href="/PropertyType/Villa" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Villas</Link>
+                  <Link href="/PropertyType/GuestHouse" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Guest Houses</Link>
+                  <Link href="/PropertyType/Apartment" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Apartments</Link>
+                  <Link href="/PropertyType/Campsite" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Campsites</Link>
+                  <Link href="/PropertyType/Hostel" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hostels</Link>
                 </div>
               )}
             </div>

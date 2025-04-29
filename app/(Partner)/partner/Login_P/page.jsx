@@ -26,7 +26,7 @@ const PartnerLogin = () => {
 
       setTimeout(() => {
         window.location.reload(); // Optional refresh
-      }, 1000);
+      }, 2000);
 
       router.push("/partner/Dashboard"); // or wherever the partner lands after login
     } catch (error) {
