@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Star } from "lucide-react";
+import { format } from 'date-fns'
 import axios from "axios";
 
 const API_BASE = "http://localhost:8090";
@@ -86,7 +87,7 @@ const Page = () => {
     }
   };
 
-  // Fetch average rating
+  // ----------------------------------- Fetch average rating-------------------------------
   const fetchAverageRating = async () => {
     try {
       const { data } = await axios.get(
@@ -98,7 +99,7 @@ const Page = () => {
     }
   };
 
-  // Handle reservation submission
+  //---------------------------------- Handle reservation submission
   const handleReservation = async (e) => {
     e.preventDefault();
     if (!user?.id) {
@@ -138,7 +139,7 @@ const Page = () => {
     }
   };
 
-  // Submit a new review
+  // ----------------------------------- Submit a new review--------------------------
   const submitReview = async (e) => {
     e.preventDefault();
     if (!comment || rating === 0) {
@@ -171,7 +172,7 @@ const Page = () => {
     }
   };
 
-  // Render stars helper
+  // ************************* Render stars helper
   const renderStars = (rat) =>
     Array.from({ length: 5 }).map((_, i) => (
       <Star
@@ -362,8 +363,10 @@ const Page = () => {
                   <div className="flex items-center gap-2">
                     <p className="font-semibold">{review?.userName || "Anonymous"}</p>
                     <div className="flex gap-1 text-yellow-500">
-                      {renderStars(review.rating)}
+                      {renderStars(review.rating)} 
                     </div>
+                    <div className="text-sm text-gray-600 ">{format(review.createdAt, 'yyyy-MM-dd')}</div>
+                    
                   </div>
                   <p className="text-sm text-gray-600 mt-2">{review.comment}</p>
                 </div>

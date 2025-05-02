@@ -1,18 +1,141 @@
 "use client";
 
-import { Star, MapPin, Heart, HeartOff } from "lucide-react";
+import { Star, MapPin, Heart } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const PropertyCard = ({ properties = [] }) => {
   const [wishlist, setWishlist] = useState({});
+  const [ratings, setRatings] = useState({});
+  const [user, setUser] = useState(null);
 
-  const toggleWishlist = (id) => {
-    setWishlist((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  // Fetch logged-in user
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get("http://localhost:8090/USERSERVICE/auth/user", {
+          withCredentials: true,
+        });
+        setUser(res.data);
+      } catch (err) {
+        if (err.response?.status === 401 || err.response?.status === 404) {
+          setUser(null);
+        } else {
+          console.error("Failed to fetch user:", err);
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // Fetch user's wishlist
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      if (!user) return;
+      try {
+        const res = await axios.get(
+          `http://localhost:8090/RESERVATION-SERVICE/wishlist/user/${user.id}`,
+          { withCredentials: true }
+        );
+        const wishMap = {};
+        res.data.forEach((item) => {
+          wishMap[item.propertyId] = true;
+        });
+        setWishlist(wishMap);
+      } catch (err) {
+        console.error("Failed to fetch wishlist:", err);
+      }
+    };
+
+    fetchWishlist();
+  }, [user]);
+
+  // Toggle wishlist (add or remove)
+  const toggleWishlist = async (propertyId) => {
+    if (!user) {
+      alert("Please log in to use wishlist.");
+      return;
+    }
+  
+    try {
+      const isWished = wishlist[propertyId];
+  
+      if (isWished) {
+        await axios.delete(
+          `http://localhost:8090/RESERVATION-SERVICE/wishlist/remove`,
+          {
+            params: {
+              userId: user.id,
+              propertyId: propertyId,
+            },
+            withCredentials: true,
+          }
+        );
+      } else {
+        await axios.post(
+          `http://localhost:8090/RESERVATION-SERVICE/wishlist/add`,
+          null,
+          {
+            params: {
+              userId: user.id,
+              propertyId: propertyId,
+            },
+            withCredentials: true,
+          }
+        );
+      }
+  
+      setWishlist((prev) => ({
+        ...prev,
+        [propertyId]: !isWished,
+      }));
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+    }
   };
+  
+
+  const computeStatus = (availableRooms) =>
+    availableRooms > 0 ? "Available" : "Fully Booked";
+
+  const handleViewDetails = (property) => {
+    localStorage.setItem("selectedProperty", JSON.stringify(property));
+  };
+
+  // Fetch average ratings
+  useEffect(() => {
+    const fetchRatings = async () => {
+      const newRatings = {};
+      for (const property of properties) {
+        try {
+          const { data } = await axios.get(
+            `http://localhost:8090/RESERVATION-SERVICE/reviews/property/${property.id}/average-rating`
+          );
+          newRatings[property.id] = data || 0;
+        } catch (err) {
+          console.error(`Error fetching rating for ${property.id}`, err);
+          newRatings[property.id] = 0;
+        }
+      }
+      setRatings(newRatings);
+    };
+
+    if (properties.length > 0) {
+      fetchRatings();
+    }
+  }, [properties]);
+
+  const renderStars = (rating) =>
+    Array.from({ length: 5 }).map((_, i) => (
+      <Star
+        key={i}
+        size={18}
+        fill={i < Math.round(rating) ? "#FFC107" : "none"}
+        stroke="#FFC107"
+      />
+    ));
 
   if (properties.length === 0) {
     return (
@@ -22,22 +145,9 @@ const PropertyCard = ({ properties = [] }) => {
     );
   }
 
-  const computeAverageRating = (reviews) => {
-    if (!reviews || reviews.length === 0) return 0;
-    const total = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return (total / reviews.length).toFixed(1);
-  };
-
-  const computeStatus = (availableRooms) =>
-    availableRooms > 0 ? "Available" : "Fully Booked";
-
-  const handleViewDetails = (property) => {
-    localStorage.setItem("selectedProperty", JSON.stringify(property));
-  };
-
   return (
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 mt-10 px-4">
-      {/* Sidebar Filters (static for now) */}
+      {/* Sidebar */}
       <aside className="hidden md:block col-span-1">
         <div className="bg-white p-4 rounded-xl shadow-sm border">
           <h3 className="text-lg font-semibold mb-4">Filters</h3>
@@ -61,32 +171,33 @@ const PropertyCard = ({ properties = [] }) => {
         </div>
       </aside>
 
-      {/* Property Cards */}
+      {/* Cards */}
       <section className="col-span-3 space-y-6">
         {properties.map((property, index) => {
-          const averageRating = computeAverageRating(property.reviews);
           const status = computeStatus(property.availableRooms);
+          const averageRating = ratings[property.id] || 0;
+
           return (
             <div
               key={index}
               className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col md:flex-row hover:shadow-xl transition duration-200 relative"
             >
-              <div className="relative">
+              <div className="relative w-full md:w-72 flex-shrink-0">
                 <img
                   src={property.imageUrl}
                   alt={property.title}
-                  className="w-full md:w-72 h-64 object-cover md:rounded-l-xl"
+                  className="w-full h-64 object-cover md:rounded-l-xl"
                 />
-                {/* Wishlist Button */}
                 <button
                   onClick={() => toggleWishlist(property.id)}
                   className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:scale-110 transition"
                 >
-                  {wishlist[property.id] ? (
-                    <HeartOff className="text-red-500 fill-red-500" />
-                  ) : (
-                    <Heart className="text-gray-500" />
-                  )}
+                  <Heart
+                    className={`${wishlist[property.id]
+                      ? "text-red-500 fill-red-500"
+                      : "text-gray-500"
+                      }`}
+                  />
                 </button>
               </div>
 
@@ -106,18 +217,9 @@ const PropertyCard = ({ properties = [] }) => {
                     {property.description}
                   </p>
                   <div className="flex items-center gap-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        size={16}
-                        fill={
-                          i < Math.round(averageRating) ? "#facc15" : "none"
-                        }
-                        stroke="#facc15"
-                      />
-                    ))}
+                    {renderStars(averageRating)}
                     <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded ml-2">
-                      {averageRating}
+                      ({averageRating})
                     </span>
                   </div>
                 </div>

@@ -8,8 +8,8 @@ import ProfileMenu from "./ProfileMenu";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
-  
+
+
   // ----------------------Fetch the logged-in user
   const [user, setUser] = useState();
   useEffect(() => {
@@ -20,8 +20,8 @@ function Navbar() {
         });
         setUser(response.data);
       } catch (error) {
-        if (error.response && (error.response.status === 404 || error.response.status === 401) ) { 
-                   // No user is logged in – do nothing
+        if (error.response && (error.response.status === 404 || error.response.status === 401)) {
+          // No user is logged in – do nothing
           setUser(null);
         } else {
           console.error("Error fetching user:", error);
@@ -30,7 +30,7 @@ function Navbar() {
     };
     fetchuser();
   }, []);
-  
+
 
 
   //----------------handlelogout---------------------------------
@@ -46,7 +46,7 @@ function Navbar() {
     localStorage.removeItem("user");
 
   };
-//--------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
   return (
     <div>
       <nav className="bg-indigo-900 shadow-md text-white">
@@ -63,20 +63,20 @@ function Navbar() {
             {/* Dropdown for Property */}
             <div className="relative">
               <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onMouseOver={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center hover:text-gray-300 focus:outline-none"
               >
                 Property <ChevronDown className="ml-1" size={18} />
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-blue-900 text-white border rounded-md shadow-2xl z-10">
-                  <Link href="/PropertyType/Hotel" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hotels</Link>
-                  <Link href="/PropertyType/Villa" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Villas</Link>
-                  <Link href="/PropertyType/GuestHouse" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Guest Houses</Link>
-                  <Link href="/PropertyType/Apartment" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Apartments</Link>
-                  <Link href="/PropertyType/Campsite" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Campsites</Link>
-                  <Link href="/PropertyType/Hostel" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hostels</Link>
+                <div className="absolute left-0 mt-2 w-48 bg-indigo-900 text-white border rounded-md shadow-2xl z-10">
+                  <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/Hotel" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hotels</Link>
+                  <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/Villa" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Villas</Link>
+                  <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/GuestHouse" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Guest Houses</Link>
+                  <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/Apartment" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Apartments</Link>
+                  <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/Campsite" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Campsites</Link>
+                  <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/Hostel" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hostels</Link>
                 </div>
               )}
             </div>
