@@ -28,7 +28,11 @@ const Page = () => {
 
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div
+        className="relative w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center text-white"
+        style={{
+          backgroundImage: "url('https://plus.unsplash.com/premium_photo-1682056762907-23d08f913805?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+        }}>
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
           <h2 className="text-2xl font-bold text-gray-900 text-center">Create an Account</h2>
           <p className="text-gray-600 text-center">Sign up to book your stay</p>

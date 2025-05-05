@@ -49,7 +49,7 @@ function Navbar() {
   //--------------------------------------------------------------------------
   return (
     <div>
-      <nav className="bg-indigo-900 shadow-md text-white">
+      <nav className="bg-gray-800 shadow-md text-white">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold">
@@ -63,14 +63,14 @@ function Navbar() {
             {/* Dropdown for Property */}
             <div className="relative">
               <button
-                onMouseOver={() => setIsDropdownOpen(!isDropdownOpen)}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center hover:text-gray-300 focus:outline-none"
               >
                 Property <ChevronDown className="ml-1" size={18} />
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-indigo-900 text-white border rounded-md shadow-2xl z-10">
+                <div className="absolute left-0 mt-2 w-48 bg-gray-800 text-white border rounded-md shadow-2xl z-10">
                   <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/Hotel" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Hotels</Link>
                   <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/Villa" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Villas</Link>
                   <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/PropertyType/GuestHouse" className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-800">Guest Houses</Link>

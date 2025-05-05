@@ -25,17 +25,30 @@ function HeroSection() {
 
     return (
         <>
-            <section className="relative h-screen flex items-center bg-gray-200">
+            <section
+                className="relative w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center text-white"
+                style={{
+                    backgroundImage: "url('https://plus.unsplash.com/premium_photo-1682056762907-23d08f913805?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+                }}
+            >
                 <div className="container mx-auto px-6 md:px-12 text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
+                    <h1 className="text-4xl md:text-6xl font-bold text-gray-800" style={{
+                        textShadow: `0 0 4px rgba(255, 255, 255, 0.9),0 0 8px rgba(255, 255, 255, 0.8),0 0 12px rgba(255, 255, 255, 0.7)`
+                    }}>
                         Find Your Perfect Stay
                     </h1>
-                    <p className="text-lg text-gray-700 mt-4 max-w-xl mx-auto">
+
+                    <p className="text-lg text-gray-800 mt-4 max-w-xl mx-auto" style={{
+                        textShadow: ` 0 0 3px rgba(255, 255, 255, 0.9),0 0 6px rgba(255, 255, 255, 0.8),0 0 10px rgba(255, 255, 255, 0.7)`
+                    }}>
                         Book the best hotels at unbeatable prices. Comfort, luxury, and relaxation await you.
                     </p>
 
+
+
+
                     {/* Search Box */}
-                    <div className="mt-8 bg-white shadow-lg rounded-lg p-6 md:p-8 max-w-4xl mx-auto">
+                    <div className="mt-8 bg-white/50 shadow-lg rounded-lg p-6 md:p-8 max-w-4xl mx-auto">
                         {/* Location Input */}
                         <div className="mb-4">
                             <label className="block text-gray-700 font-semibold mb-2">Search Location</label>

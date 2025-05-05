@@ -8,7 +8,7 @@ const ProfileMenu = ({ user, handleLogout }) => {
     <div className="relative z-15 px-2">
       {/* Profile Button */}
       <button
-        onMouseOver={() => setIsDropdownOpen(!isDropdownOpen)}
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className="flex items-center gap-2 focus:outline-none"
       >
         <div className="w-10 h-10 flex items-center justify-center bg-white text-blue-900 font-bold rounded-full">
@@ -20,17 +20,17 @@ const ProfileMenu = ({ user, handleLogout }) => {
       {/* Dropdown Menu */}
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
-          <Link href="/account">
+          <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/account">
             <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">
               My Account
             </div>
           </Link>
-          <Link href="/Bookings">
+          <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/Bookings">
             <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">
               My Bookings
             </div>
           </Link>
-          <Link href="/Wishlist">
+          <Link onClick={() => setIsDropdownOpen(!isDropdownOpen)} href="/Wishlist">
             <div className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">
               Wishlist
             </div>
